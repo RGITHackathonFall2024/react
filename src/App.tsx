@@ -122,7 +122,7 @@ export default function StudentAssistant() {
                   <img
                     src="https://uploads.dailydot.com/2024/07/side-eye-cat.jpg"
                     alt="Profile"
-                    className="w-8 h-8 rounded-full mr-2 flex-shrink-0"
+                    className="w-9 h-9 rounded-full mr-2 flex-shrink-0"
                   />
                 )}
                 <div className={`message-bubble ${message.role}`}>
@@ -133,7 +133,7 @@ export default function StudentAssistant() {
             </CSSTransition>
           ))}
         </TransitionGroup>
-        <div className="flex-1 p-4" ref={scrollAreaRef}>
+        <div className="" ref={scrollAreaRef}>
         </div>
       </ScrollArea>
                 <div className="p-4">
@@ -157,7 +157,7 @@ export default function StudentAssistant() {
   )
 
   const renderProfileContent = () => (
-    <div className=" mx-auto mx-10 w-1/2">
+    <div className="mx-10">
         <h2 className="text-2xl font-bold mb-6 mt-10">Профиль</h2>
         <form className="space-y-5">
           <div>
