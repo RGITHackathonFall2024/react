@@ -1,0 +1,63 @@
+.fade-enter {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  .fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 500ms, transform 500ms;
+  }
+  .fade-exit {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .fade-exit-active {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 500ms, transform 500ms;
+  }
+
+  .message-enter {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .message-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .message-exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .message-exit-active {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 300ms, transform 300ms;
+  }
+
+  .send-button {
+    transition: background-color 300ms, color 300ms;
+  }
+
+  .button-transition {
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button-transition::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.5s, opacity 1s;
+    pointer-events: none;
+}
+
+.button-transition {
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
