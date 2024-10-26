@@ -27,7 +27,7 @@ export default function StudentAssistant() {
       setMessages([...messages, { role: 'user', content: inputMessage }])
       setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: 'тестовый ответ от нейронки' }])
       setInputMessage('')
-      scrollAreaRef.current?.scrollIntoView({ behavior: "smooth" })
+      // scrollAreaRef.current?.scrollIntoView({ behavior: "smooth" })
     }
   }
 
