@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, User, LogOut, Building, Home, Briefcase, SendHorizonal } from 'lucide-react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { Button } from "@/components/ui/button"
@@ -19,6 +19,7 @@ export default function StudentAssistant() {
   const [messages, setMessages] = useState<Message[]>([])
   const [inputMessage, setInputMessage] = useState('')
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault()
@@ -26,8 +27,13 @@ export default function StudentAssistant() {
       setMessages([...messages, { role: 'user', content: inputMessage }])
       setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: 'тестовый ответ от нейронки' }])
       setInputMessage('')
+      scrollAreaRef.current?.scrollIntoView({ behavior: "smooth" })
     }
   }
+
+  useEffect(() => {
+    scrollAreaRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages])
 
   const handleLogoutConfirm = (confirm: boolean) => {
     if (confirm) {
@@ -37,7 +43,6 @@ export default function StudentAssistant() {
     setShowLogoutConfirm(false)
     setActiveTab('chat')
   }
-
   const renderMainContent = () => (
     <div className="w-full min-h-screen flex flex-col justify-center items-center">
       <div className="flex flex-col items-center justify-center h-full p-4">
@@ -81,6 +86,23 @@ export default function StudentAssistant() {
             </Card>
           ))}
         </div>
+        <div className="w-full max-w-4xl mt-8">
+          <form onSubmit={handleSendMessage} className="flex items-center">
+            <Input
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              placeholder="Введите ваше сообщение..."
+              className="flex-1 rounded-none rounded-l-xl border-0 bg-gray-100 placeholder:text-gray-400"
+            />
+            <Button
+              type="submit"
+              className={`send-button rounded-none rounded-r-xl ${inputMessage ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} `}
+            >
+              <SendHorizonal className="h-5 w-5" />
+              <span className="sr-only">Отправить</span>
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   )
@@ -106,11 +128,31 @@ export default function StudentAssistant() {
                 <div className={`message-bubble ${message.role}`}>
                   {message.content}
                 </div>
+                
               </div>
             </CSSTransition>
           ))}
         </TransitionGroup>
+        <div className="flex-1 p-4" ref={scrollAreaRef}>
+        </div>
       </ScrollArea>
+                <div className="p-4">
+            <form onSubmit={handleSendMessage} className="flex items-center">
+              <Input
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                placeholder="Введите ваше сообщение..."
+                className="flex-1 rounded-none rounded-l-xl border-0 bg-gray-100 placeholder:text-gray-400"
+              />
+              <Button
+                type="submit"
+                className={`send-button rounded-none rounded-r-xl ${inputMessage ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} `}
+              >
+                <SendHorizonal className="h-5 w-5" />
+                <span className="sr-only">Отправить</span>
+              </Button>
+            </form>
+          </div>
     </div>
   )
 
@@ -198,32 +240,13 @@ export default function StudentAssistant() {
               {activeTab === 'chat' && (
                 <>
                   {messages.length === 0 && renderMainContent()}
-                  {renderChatContent()}
+                  {messages.length != 0 && renderChatContent()}
                 </>
               )}
               {activeTab === 'profile' && renderProfileContent()}
               {activeTab === 'logout' && showLogoutConfirm && renderLogoutContent()}
           {/* </CSSTransition>
         </TransitionGroup> */}
-        {activeTab === 'chat' && (
-          <div className="p-4">
-            <form onSubmit={handleSendMessage} className="flex items-center">
-              <Input
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                placeholder="Введите ваше сообщение..."
-                className="flex-1 rounded-none rounded-l-xl border-0 bg-gray-100 placeholder:text-gray-400"
-              />
-              <Button
-                type="submit"
-                className={`send-button rounded-none rounded-r-xl ${inputMessage ? 'bg-black text-white hover:bg-gray-800' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} `}
-              >
-                <SendHorizonal className="h-5 w-5" />
-                <span className="sr-only">Отправить</span>
-              </Button>
-            </form>
-          </div>
-        )}
       </main>
     </div>
   )
