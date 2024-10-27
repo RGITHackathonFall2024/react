@@ -1,7 +1,8 @@
 import { Building, Home, Briefcase } from 'lucide-react'
 import CategoryCard from '../components/CategoryCard'
-import MessageInput from '../components/MessageInput'
-
+import { LoginButton } from '@telegram-auth/react';
+import { useAuth } from '@/lib/auth/index';
+import MessageInput from '@/components/MessageInput';
 type WelcomeProps = {
   handleSendMessage: (e: React.FormEvent) => void
   inputMessage: string
@@ -9,6 +10,7 @@ type WelcomeProps = {
 }
 
 export default function Welcome({ handleSendMessage, inputMessage, setInputMessage }: WelcomeProps) {
+  const { login, isLoggedIn } = useAuth();
   const categories = [
     {
       title: 'Вуз',
@@ -48,13 +50,27 @@ export default function Welcome({ handleSendMessage, inputMessage, setInputMessa
             <CategoryCard key={index} {...category} />
           ))}
         </div>
-        <div className="w-full max-w-4xl mt-8">
+        {isLoggedIn ? <div className="w-full max-w-4xl mt-8">
           <MessageInput
             inputMessage={inputMessage}
             setInputMessage={setInputMessage}
             handleSendMessage={handleSendMessage}
           />
-        </div>
+        </div> : <div className="w-full max-w-4xl mt-8 flex justify-center">
+          <LoginButton
+            botUsername={"iron_student_bot"}
+            buttonSize="large" // "large" | "medium" | "small"
+            cornerRadius={0} // 0 - 20
+            showAvatar={true} // true | false
+            requestAccess={"write"}
+            lang="ru"
+            onAuthCallback={(data) => {
+              login(data);
+
+            }}
+          />
+        </div>}
+
       </div>
     </div>
   )

@@ -9,6 +9,7 @@ import LoadingEllipsis from '@/components/LoadingEllipsis'
 import MessageEntity from '@/components/MessageEntity'
 import IronHand from "@/assets/IronHand.webp";
 import { socket } from '@/lib/api/socket'
+import { useAuth } from '@/lib/auth'
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([])
@@ -33,6 +34,7 @@ export default function ChatPage() {
   }
 
   useEffect(() => {
+    socket.emit("auth", localStorage.getItem("jwt"));
     socket.on("new_message", (message: any) => {
       if (message.role === "assistant") setLoading(false);
       setMessages(m => m.concat([{ role: message.role, content: JSON.parse(message.content) }]))
