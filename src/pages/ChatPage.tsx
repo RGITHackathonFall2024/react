@@ -29,6 +29,7 @@ export default function ChatPage() {
     scrollAreaRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
   function sendMessage(text: string) {
+    console.log("sending", text)
     socket.emit("message", text);
     setLoading(true);
   }
